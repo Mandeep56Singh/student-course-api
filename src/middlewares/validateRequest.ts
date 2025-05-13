@@ -10,9 +10,10 @@ export const validateRequest =
         query: req.query,
         params: req.params,
       });
-      req.query = parsedData.query;
+     
       next();
     } catch (err) {
+        console.error("Caught error:", err);
       if (err instanceof ZodError) {
         res.status(400).json({
           success: false,
