@@ -27,9 +27,19 @@ export const login = async (
 ): Promise<void> => {
   console.log("request hit at login controller");
   try {
-    await loginService(req.body);
+    const token = await loginService(req.body);
 
-    res.status(200).json("Login Successfully");
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, 
+      sameSite: "lax",
+      maxAge: 3600000,
+    });
+    res.status(200).json({
+      message: "Login Successfull",
+      token: token,
+    });
+
   } catch (err: any) {
     console.error("Catch error", err);
     if (err instanceof BadRequestError) {
