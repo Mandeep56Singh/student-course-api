@@ -1,0 +1,25 @@
+# Node.js dependencies
+/node_modules/
+
+# TypeScript build output
+/dist/
+
+# Environment variable configuration files
+.env
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# OS-specific files
+.DS_Store        # macOS system files
+Thumbs.db        # Windows system files
+
+# Optional IDE/editor files
+.vscode/          # VSCode settings
+.idea/            # JetBrains IDE (e.g., IntelliJ, PhpStorm) files
+*.swp             # Vim swap files
+
+# TypeScript build files
+*.tsbuildinfo     # TypeScript incremental build info file
