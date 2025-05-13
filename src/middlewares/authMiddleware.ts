@@ -14,19 +14,23 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.token;
-  if (!token) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({
       message: "Unauthorized",
     });
     return;
   }
+  const token = authHeader.split(" ")[1];
+
   try {
     const decoded = jwt.verify(token, jwt_secret);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(403).send("Forbidden");
-    return
+    res
+      .status(401)
+      .json({ message: "Authentication failed: Invalid or expired token" });
+    return;
   }
 };

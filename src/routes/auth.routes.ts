@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, logout, register } from "../controllers/authController.js";
+import { login, register } from "../controllers/authController.js";
 import {
   AuthenticatedRequest,
   authMiddleware,
@@ -11,7 +11,7 @@ export const authRouter = Router();
 
 authRouter.post("/register", validateRequest(userValidationSchema), register);
 authRouter.post("/login", validateRequest(userValidationSchema), login);
-authRouter.post("/logout", logout)
+
 authRouter.get(
   "/test-auth",
   authMiddleware,
