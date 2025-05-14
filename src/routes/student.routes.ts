@@ -9,13 +9,14 @@ import {
 import { validateRequest } from "../middlewares/validateRequest.js";
 import {
   studentIdValidationSchema,
+  studentQuerySchema,
   studentUpdateValidationSchema,
   studentValidationSchema,
 } from "../validator/studentValidation.schema.js";
 
 export const studentRouter = Router();
 
-studentRouter.get("/", getStudents);
+studentRouter.get("/", validateRequest(studentQuerySchema), getStudents);
 studentRouter.get(
   "/:id",
   validateRequest(studentIdValidationSchema),

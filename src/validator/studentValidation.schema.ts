@@ -30,10 +30,28 @@ export const studentIdValidationSchema = z.object({
   }),
 });
 
+export const studentQuerySchema = z.object({
+  query: z.object({
+    page: z
+      .string()
+      .optional()
+      .refine((val) => !val || /^[1-9]\d*$/.test(val), {
+        message: "Page must be a positive integer",
+      }),
+
+    limit: z
+      .string()
+      .optional()
+      .refine((val) => !val || /^[1-9]\d*$/.test(val), {
+        message: "Limit must be a positive integer",
+      }),
+    department: z.string().optional(),
+  }),
+});
 
 export const studentUpdateValidationSchema = studentIdValidationSchema.merge(
-    z.object({body: studentValidationSchema})
-)
-
+  z.object({ body: studentValidationSchema })
+);
+export type StudentQueryType = z.infer<typeof studentQuerySchema>["query"];
 export type StudentId = z.infer<typeof studentIdValidationSchema>["params"];
 export type StudentType = z.infer<typeof studentValidationSchema>["body"];

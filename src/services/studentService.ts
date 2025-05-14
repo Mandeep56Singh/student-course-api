@@ -1,9 +1,40 @@
 import Student from "../models/student.model.js";
 import { NotFoundError } from "../utils/error.js";
 import { StudentType } from "../validator/studentValidation.schema.js";
+interface PaginationFilterOptions {
+  page: number;
+  limit: number;
+  department?: string;
+}
 
-export const getAllStudents = async () => {
-  return Student.find().populate("enrolledCourse");
+export const getAllStudents = async ({
+  page,
+  limit,
+  department,
+}: PaginationFilterOptions) => {
+  
+  const filter: any = {};
+  if (department) {
+    filter.department = department;
+  }
+
+  const skip = (page - 1) * limit;
+
+  const [students, total] = await Promise.all([
+    Student.find(filter)
+      .populate("enrolledCourse")
+      .skip(skip)
+      .limit(limit)
+      .exec(),
+    Student.countDocuments(filter),
+  ]);
+
+  return {
+    data: students,
+    total,
+    currentPage: page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 export const getStudentById = async (id: string) => {

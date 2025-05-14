@@ -3,15 +3,34 @@ import * as studentService from "../services/studentService.js";
 import { NotFoundError } from "../utils/error.js";
 import {
   StudentId,
+  StudentQueryType,
   StudentType,
 } from "../validator/studentValidation.schema.js";
 
 export const getStudents = async (
-  req: Request,
+  req: Request<{}, {}, {}, StudentQueryType>,
   res: Response
 ): Promise<void> => {
+  const { page = "1", limit = "10", department } = req.query;
+
+  const parsedPage = parseInt(page, 10);
+  const parsedLimit = parseInt(limit, 10);
+
+  if (isNaN(parsedPage) || parsedPage <= 0) {
+    res.status(400).json({ message: "Page must be a positive integer" });
+    return;
+  }
+  if (isNaN(parsedLimit) || parsedLimit <= 0) {
+    res.status(400).json({ message: "Limit must be a positive integer" });
+    return;
+  }
+
   try {
-    const students = await studentService.getAllStudents();
+    const students = await studentService.getAllStudents({
+      page: parsedPage,
+      limit: parsedLimit,
+      department,
+    });
     res.status(200).json(students);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
