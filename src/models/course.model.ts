@@ -17,6 +17,6 @@ const courseSchema = new Schema<ICourse>(
   }
 );
 // index for efficient search
-courseSchema.index({ title: 1 });
+courseSchema.index({ title: "text", description: "text" });
 
 export default mongoose.model<ICourse>("Course", courseSchema);
