@@ -11,14 +11,10 @@ export const createCourse = async (data: CourseType) => {
   const { title, description, credits } = data;
 
   const newCourse = new Course({ title, description, credits });
-  return newCourse.save(); 
+  return newCourse.save();
 };
 
-
-export const updateCourse = async (
-  id: string,
-  data: Partial<CourseType>
-) => {
+export const updateCourse = async (id: string, data: Partial<CourseType>) => {
   // Check if the course exists
   const course = await Course.findById(id);
   if (!course) {
@@ -30,7 +26,7 @@ export const updateCourse = async (
   course.description = data.description || course.description;
   course.credits = data.credits || course.credits;
 
-  return course.save(); 
+  return course.save();
 };
 
 export const deleteCourse = async (id: string) => {
@@ -40,5 +36,15 @@ export const deleteCourse = async (id: string) => {
     throw new NotFoundError("Course not found");
   }
 
-  return Course.deleteOne({ _id: id }); 
+  return Course.deleteOne({ _id: id });
+};
+
+export const searchCourse = async (title: string) => {
+  const courses = await Course.find({ $text: { $search: title } });
+
+  if (courses.length === 0) {
+    throw new NotFoundError(`No course named ${title} found`);
+  }
+
+  return courses;
 };

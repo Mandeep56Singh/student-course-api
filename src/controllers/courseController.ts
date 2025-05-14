@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import * as courseService from "../services/courseService.js";
 import { NotFoundError } from "../utils/error.js";
-import { CourseId, CourseType } from "../validator/courseValidation.schema.js";
+import {
+  CourseId,
+  CourseSearchQueryType,
+  CourseType,
+} from "../validator/courseValidation.schema.js";
 
 // Get all courses
 export const getCourses = async (
@@ -57,6 +61,27 @@ export const deleteCourse = async (
   try {
     await courseService.deleteCourse(id);
     res.status(200).json({ message: "Course deleted successfully" });
+  } catch (err: any) {
+    if (err instanceof NotFoundError) {
+      res.status(err.statusCode).json({ message: err.message });
+    }
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Search a course
+
+export const searchCourse = async (
+  req: Request<{}, {}, {}, CourseSearchQueryType>,
+  res: Response
+): Promise<void> => {
+  try {
+    const { title } = req.query;
+    const courses = await courseService.searchCourse(title);
+    res.status(200).json({
+      data: courses,
+      message: "Course Found",
+    });
   } catch (err: any) {
     if (err instanceof NotFoundError) {
       res.status(err.statusCode).json({ message: err.message });

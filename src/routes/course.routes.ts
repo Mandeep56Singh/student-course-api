@@ -3,6 +3,7 @@ import * as courseController from "../controllers/courseController.js";
 import { validateRequest } from "../middlewares/validateRequest.js";
 import {
   courseIdValidationSchema,
+  courseSearchValidationSchema,
   courseUpdateValidationSchema,
   courseValidationSchema,
 } from "../validator/courseValidation.schema.js";
@@ -32,3 +33,11 @@ courseRouter.delete(
   validateRequest(courseIdValidationSchema),
   courseController.deleteCourse
 );
+
+// SEARCH /courses/search?title=abc
+
+courseRouter.get(
+  "/search",
+  validateRequest(courseSearchValidationSchema),
+  courseController.searchCourse
+)
