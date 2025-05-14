@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export const courseValidationSchema = z.object({
   body: z.object({
     title: z.string().min(1, "Title is required"),
@@ -6,6 +7,7 @@ export const courseValidationSchema = z.object({
     credits: z.number().min(1, "credits are required"),
   }),
 });
+
 export const courseIdValidationSchema = z.object({
   params: z.object({
     id: z
@@ -14,5 +16,12 @@ export const courseIdValidationSchema = z.object({
       .regex(/^[a-f\d]{24}$/i, { message: "Invalid MongoDB ObjectId" }),
   }),
 });
+
+export const courseUpdateValidationSchema = courseIdValidationSchema.merge(
+  z.object({
+    body: courseValidationSchema
+  })
+)
+
 export type CourseId = z.infer<typeof courseIdValidationSchema>["params"]
 export type CourseType = z.infer<typeof courseValidationSchema>["body"];

@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 // routes
 app.use("/auth", authRouter);
-app.use("/course", authMiddleware, courseRouter);
+app.use("/courses", authMiddleware, courseRouter);
 app.use("/students", authMiddleware, studentRouter);
 
 connectDB();
