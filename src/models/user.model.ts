@@ -23,5 +23,5 @@ const userSchema: Schema = new Schema<IUSer>(
     timestamps: true,
   }
 );
-userSchema.index({ name: 1 });
+
 export default mongoose.model<IUSer>("User", userSchema);

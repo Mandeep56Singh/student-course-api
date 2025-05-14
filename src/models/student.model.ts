@@ -28,7 +28,7 @@ const studentSchema: Schema = new Schema<IStudent>(
   }
 );
 
-studentSchema.index({ email: 1 });
+//  for filtering students based on departments
 studentSchema.index({ department: 1 });
 
 // Mongoose Model
