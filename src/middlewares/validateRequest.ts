@@ -5,6 +5,9 @@ export const validateRequest =
   (schema: AnyZodObject) =>
   (req: Request, res: Response, next: NextFunction): void => {
     try {
+      console.log("BODY IN MIDDLEWARE:", req.body);
+      console.log("PARAMS:", req.params);
+
       const parsedData = schema.parse({
         body: req.body,
         query: req.query,

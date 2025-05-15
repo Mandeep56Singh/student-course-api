@@ -27,7 +27,7 @@ studentRouter.post(
   validateRequest(studentValidationSchema),
   createStudent
 );
-studentRouter.put(
+studentRouter.patch(
   "/:id",
   validateRequest(studentUpdateValidationSchema),
   updateStudent

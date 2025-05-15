@@ -49,9 +49,14 @@ export const studentQuerySchema = z.object({
   }),
 });
 
-export const studentUpdateValidationSchema = studentIdValidationSchema.merge(
-  z.object({ body: studentValidationSchema })
-);
+const studentUpdateBodySchema = studentValidationSchema.shape.body.partial();
+
+export const studentUpdateValidationSchema = z.object({
+  params: studentIdValidationSchema.shape.params,
+  body: studentUpdateBodySchema,
+});
+
+
 export type StudentQueryType = z.infer<typeof studentQuerySchema>["query"];
 export type StudentId = z.infer<typeof studentIdValidationSchema>["params"];
 export type StudentType = z.infer<typeof studentValidationSchema>["body"];
